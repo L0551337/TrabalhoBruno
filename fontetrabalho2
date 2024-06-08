@@ -1,0 +1,77 @@
+extends Control
+
+# Função que calcula o Mínimo Múltiplo Comum (MMC)
+func _mmc(numero1: int, numero2: int) -> int:
+	# Inicializa a variável do MMC
+	var mmc = 0
+	# Descobre o maior e o menor número
+	var maior = max(numero1, numero2)
+	var menor = min(numero1, numero2)
+	
+	# Inicializa o contador com o maior número
+	var i = maior
+	
+	# Loop infinito até encontrar o MMC
+	while true:
+		if i % menor == 0 and i % maior == 0:
+			mmc = i
+			break
+		i += maior
+	
+	return mmc
+
+# Função que verifica se um número é par ou ímpar
+func _impopar(numero: int) -> String:
+	if numero % 2 == 0:
+		return "par"
+	else:
+		return "ímpar"
+
+# Função que verifica se um número é primo ou composto
+func _primo_composto(numero: int) -> String:
+	# Caso especial: 1 não é nem primo nem composto
+	if numero == 1:
+		return "1 não é nem primo nem composto, mano!"
+	
+	# Loop para verificar se o número é divisível por outros números
+	for i in range(2, int(sqrt(numero)) + 1):
+		if numero % i == 0:
+			return "composto"
+	
+	return "primo"
+
+# Função que calcula o Máximo Divisor Comum (MDC)
+func _mdc(numero1: int, numero2: int) -> int:
+	var temp
+	# Algoritmo de Euclides para calcular o MDC
+	while numero2 != 0:
+		temp = numero2
+		numero2 = numero1 % numero2
+		numero1 = temp
+	
+	return numero1
+
+# Botão pressionado para calcular o MMC
+func _on_mmc_pressed():
+	var numero1 = int($valor1.text)
+	var numero2 = int($valor2.text)
+	$resultado.text = "o mmc é "+str(_mmc(numero1,numero2))
+
+# Botão pressionado para calcular o MDC
+func _on_mdc_pressed():
+	var numero1 = int($valor1.text)
+	var numero2 = int($valor2.text)
+	$resultado.text = "o mdc é "+str(_mdc(numero1,numero2))
+
+# Botão pressionado para verificar se é par ou ímpar
+func _on_poi_pressed():
+	var numero = int($valor3.text)
+	$resultado.text = "o numero "+$valor3.text+" é "+_impopar(numero)
+
+# Botão pressionado para verificar se é primo ou composto
+func _on_poc_pressed():
+	var numero = int($valor3.text)
+	if numero >2:
+		$resultado.text = "o numero "+$valor3.text+" é "+_primo_composto(numero)
+	else:
+		$resultado.text = _primo_composto(numero)
