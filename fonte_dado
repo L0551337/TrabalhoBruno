@@ -1,0 +1,41 @@
+extends Node2D
+
+func _ready():
+	# Inicializa uma seed aleatória pra garantir que os resultados sejam bem random
+	randomize()
+
+# Função pra rolar um dado com o valor que você escolheu
+# O parâmetro 'value' é o número máximo do dado, definido no botão de toque
+func _roll_dice(value):
+	# Lista dos valores de dados possíveis
+	var dice_values = [2, 4, 6, 8, 10, 12, 20, 30, 100]
+	
+	# Esconde todas as sprites ao iniciar uma nova rolagem
+	# Percorre cada valor da lista de valores dos dados
+	for i in dice_values:
+		# Pega o sprite correspondente ao dado específico (ex: "D6" pra um dado de seis lados)
+		var _sprite = $Dado.get_node("D" + str(i))
+		# Esconde o sprite do dado atual
+		_sprite.hide()
+	
+	# Gera um resultado aleatório entre 1 e o valor máximo do dado
+	var result = randi() % value + 1
+	# Define o texto do Label 'valor' com o resultado gerado
+	$Dado/valor.text = str(result)
+	# Mostra o sprite do dado correspondente ao valor
+	$Dado.get_node("D" + str(value)).show()
+	# Mostra o valor do resultado
+	$Dado/valor.show()
+	# Chama a função pra tocar o som apropriado baseado no valor do dado
+	_play_sound(value)
+
+# Função pra tocar um som baseado no valor do dado
+# O parâmetro 'value' é o número máximo do dado (ex: 6 pra um dado de seis lados)
+func _play_sound(value):
+	# Verifica se o valor do dado é 2 (moeda)
+	if value == 2:
+		# Toca o som de moeda
+		$coin_sfx.play()
+	else:
+		# Toca o som de dado
+		$dice_sfx.play()
